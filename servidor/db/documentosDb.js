@@ -1,12 +1,14 @@
-import { documentosColecao } from "./dbConnect.js";
+import { getDocumentosColecao } from "./dbConnect.js";
 
-function obterDocumentos() {
-  const documentos = documentosColecao.find().toArray();
+async function obterDocumentos() {
+  const colecao = await getDocumentosColecao();
+  const documentos = await colecao.find().toArray();
   return documentos;
 }
 
-function adicionarDocumento(nome) {
-  const resultado = documentosColecao.insertOne({
+async function adicionarDocumento(nome) {
+  const colecao = await getDocumentosColecao();
+  const resultado = colecao.insertOne({
     nome,
     texto: "",
   });
@@ -14,16 +16,18 @@ function adicionarDocumento(nome) {
   return resultado;
 }
 
-function encontrarDocumento(nome) {
-  const documento = documentosColecao.findOne({
+async function encontrarDocumento(nome) {
+  const colecao = await getDocumentosColecao();
+  const documento = colecao.findOne({
     nome,
   });
 
   return documento;
 }
 
-function atualizaDocumento(nome, texto) {
-  const atualizacao = documentosColecao.updateOne(
+async function atualizaDocumento(nome, texto) {
+  const colecao = await getDocumentosColecao();
+  const atualizacao = colecao.updateOne(
     {
       nome,
     },
@@ -37,8 +41,9 @@ function atualizaDocumento(nome, texto) {
   return atualizacao;
 }
 
-function excluirDocumento(nome) {
-  const resultado = documentosColecao.deleteOne({
+async function excluirDocumento(nome) {
+  const colecao = await getDocumentosColecao();
+  const resultado = colecao.deleteOne({
     nome,
   });
 
