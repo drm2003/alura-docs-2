@@ -1,10 +1,13 @@
-const socket = io();
+import { definirCookie } from "../utils/cookies.js";
+
+const socket = io("http://localhost:3000");
 
 function emitirAutenticarUsuario(dados){
     socket.emit("autenticar_usuario", dados);
 }
 
 socket.on("autenticacao_sucesso", (dados) => {
+    definirCookie("tokenJwt", dados.tokenJwt);
     alert(dados.mensagem);
     window.location.href = "/";
 }); 

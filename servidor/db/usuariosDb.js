@@ -1,4 +1,4 @@
-import criaHashESalSenha from "../utils/criaHashESalSenha.js";
+import criaHashESalSenha from "../../public/utils/criaHashESalSenha.js";
 import { getUsuarios } from "./dbConnect.js";
 
 async function encontrarUsuario(nome) {
