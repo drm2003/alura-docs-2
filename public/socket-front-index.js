@@ -4,11 +4,11 @@ import { obterCookie } from "./utils/cookies.js";
 const socket = io("/usuarios", {
   auth: {
     token: obterCookie("tokenJwt"),
-  }
+  },
 });
 
-socket.on("connect_error", (error) => {
-  alert("Erro ao conectar ao servidor. Verifique se o servidor está em execução.");
+socket.on("connect_error", (erro) => {
+  alert(erro);
   window.location.href = "/login/index.html";
 });
 

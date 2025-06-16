@@ -1,15 +1,16 @@
-function definirCookie(chave, valor) {  
-    document.cookie = `${chave}=${valor}; path=/; SameSite=Lax; Secure;`;
+function definirCookie(chave, valor) {
+  document.cookie = `${chave}=${valor};path=/`;
 }
 
 function obterCookie(chave) {
-    return document.cookie
-        .split("; ")
-        .find((cookie) => cookie.startsWith(`${chave}=`))?.split("=")[1];
+  return document.cookie
+    .split("; ")
+    .find((cookie) => cookie.startsWith(`${chave}=`))
+    ?.split("=")[1];
 }
 
-function removeCookie(chave) {
-    document.cookie = `${chave}=; expires=Thu, 01 Jan 1970 00:00:00 GMT; path=/; SameSite=Lax; Secure;`;
+function removerCookie(chave) {
+  document.cookie = `${chave}=; expires=Thu, 01 Jan 1970 00:00:00`;
 }
 
-export { definirCookie, obterCookie, removeCookie };
+export { definirCookie, obterCookie, removerCookie };
