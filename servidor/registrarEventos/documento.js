@@ -1,4 +1,4 @@
-import { adicionarConexaoDocumento } from "../utils/conexoesDocumentos.js";
+import { adicionarConexaoDocumento, obterUsuariosDocumento } from "../utils/conexoesDocumentos.js";
 
 import {
   atualizaDocumento,
@@ -16,6 +16,9 @@ function registrarEventosDocumento(socket, io) {
       adicionarConexaoDocumento({ nomeDocumento, nomeUsuario });
 
       const usuariosNoDocumento = obterUsuariosDocumento(nomeDocumento);
+
+      io.to(nomeDocumento).emit("usuarios_no_documento", usuariosNoDocumento);
+      
 
       devolverTexto(documento.texto);
     }
