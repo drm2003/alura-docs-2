@@ -12,7 +12,7 @@ async function conectarDB() {
     db = cliente.db("alura-websockets");
 
     
-    console.log("Conectado ao banco de dados com sucesso!");
+    // console.log("Conectado ao banco de dados com sucesso!");
   } catch (erro) {
     console.log(erro);
     throw new Error("Erro ao conectar ao banco de dados");

@@ -20,6 +20,11 @@ function selecionarDocumento(dadosEntrada) {
   });
 }
 
+socket.on("usuario_ja_no_documento", (mensagem) => {
+  alert(mensagem);
+  window.location.href = "/";
+});
+
 socket.on("usuarios_no_documento", atualizarInterfaceUsuarios);
 
 function emitirTextoEditor(dados) {

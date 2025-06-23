@@ -1,4 +1,4 @@
-import { adicionarConexaoDocumento, obterUsuariosDocumento } from "../utils/conexoesDocumentos.js";
+import { adicionarConexaoDocumento, encontrarConexao, obterUsuariosDocumento, removerconexao } from "../utils/conexoesDocumentos.js";
 
 import {
   atualizaDocumento,
@@ -11,17 +11,38 @@ function registrarEventosDocumento(socket, io) {
     const documento = await encontrarDocumento(nomeDocumento);
     
     if (documento) {
-      socket.join(nomeDocumento);
+      const conexaoEncontrada = encontrarConexao(nomeDocumento, nomeUsuario);
 
-      adicionarConexaoDocumento({ nomeDocumento, nomeUsuario });
+      if (!conexaoEncontrada) {
+        socket.join(nomeDocumento);
+  
+        adicionarConexaoDocumento({ nomeDocumento, nomeUsuario });
 
-      const usuariosNoDocumento = obterUsuariosDocumento(nomeDocumento);
+        socket.data = {
+          usuarioEntrou: true
+        };
+  
+        const usuariosNoDocumento = obterUsuariosDocumento(nomeDocumento);
+  
+        io.to(nomeDocumento).emit("usuarios_no_documento", usuariosNoDocumento);
+        
+  
+        devolverTexto(documento.texto);
+      } else {
+        socket.emit("usuario_ja_no_documento", "Você já está conectado a este documento.");
+      }
 
-      io.to(nomeDocumento).emit("usuarios_no_documento", usuariosNoDocumento);
-      
-
-      devolverTexto(documento.texto);
     }
+
+    socket.on("disconnect", () => {
+      if (socket.data.usuarioEntrou) {
+        removerconexao(nomeDocumento, nomeUsuario);
+        
+        const usuariosNoDocumento = obterUsuariosDocumento(nomeDocumento);
+  
+        io.to(nomeDocumento).emit("usuarios_no_documento", usuariosNoDocumento);
+      }
+    });
   });
 
   socket.on("texto_editor", async ({ texto, nomeDocumento }) => {
